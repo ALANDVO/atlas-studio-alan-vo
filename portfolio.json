@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "name": "atlas-studio-alan-vo",
+  "owner": "ALANDVO",
+  "email": "alanvo@gmail.com",
+  "domain": "AI/ML developer tools",
+  "summary": "Work in progress: atlas-studio-alan-vo",
+  "workflows": [
+    "Import job postings with source URL, company, title, deadline, and content snippet",
+    "Run the deterministic TF-IDF relevance scoring pipeline against a target role profile, with fetch-failure retry semantics that never conflate a failed fetch with an expired posting",
+    "Evaluate the scorer against a labeled dataset of 10 job postings with explicit IR metrics (Precision@k, MAP, NDCG)",
+    "Opt-in LLM explanation of scoring rationale, grounded in actual TF-IDF matched terms, supporting OpenAI-compatible, Anthropic, Gemini, and Ollama providers"
+  ],
+  "auth": "oidc-keycloak-saml-broker",
+  "llm_providers": [
+    "openai-compatible",
+    "anthropic",
+    "gemini",
+    "ollama"
+  ],
+  "version": "1.0.0",
+  "status": "work-in-progress"
+}
