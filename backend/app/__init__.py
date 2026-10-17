@@ -1,0 +1,1 @@
+# Atlas Studio - local AI job application framework.

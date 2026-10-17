@@ -1,0 +1,11 @@
+{
+    auto_https off
+    local_certs
+}
+
+atlas-studio.local {
+    reverse_proxy /api/* backend:8000
+    reverse_proxy /auth/* backend:8000
+    reverse_proxy /health backend:8000
+    reverse_proxy frontend:8080
+}
