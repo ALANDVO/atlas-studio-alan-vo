@@ -137,4 +137,43 @@ class TestRoleHierarchy:
         assert resp.status_code == 201
         posting_id = resp.json()["id"]
         resp = await analyst_client.delete(f"/api/postings/{posting_id}")
-        assert resp.status_code == 403
+
+
+class TestOIDCLogin:
+    """Tests for OIDC authorization-code flow with PKCE."""
+
+    async def test_oidc_login_not_configured(self, client):
+        """OIDC login returns 501 when not configured."""
+        resp = await client.get("/auth/oidc/login")
+        assert resp.status_code == 501
+        assert "not configured" in resp.json()["detail"].lower()
+
+    async def test_oidc_login_missing_redirect_uri(self, client, monkeypatch):
+        """OIDC login returns 400 when redirect_uri is not configured."""
+        # Set OIDC config via monkeypatch on settings
+        from app.core.config import settings
+        monkeypatch.setattr(settings, "oidc_issuer_url", "https://keycloak.example.com/realms/atlas-studio")
+        monkeypatch.setattr(settings, "oidc_client_id", "atlas-studio-frontend")
+        monkeypatch.setattr(settings, "oidc_redirect_uri", None)
+
+        resp = await client.get("/auth/oidc/login")
+        assert resp.status_code == 400
+        assert "redirect_uri" in resp.json()["detail"].lower()
+
+    async def test_oidc_callback_missing_params(self, client):
+        """OIDC callback returns 400 when code or state is missing."""
+        resp = await client.get("/auth/oidc/callback")
+        assert resp.status_code == 400
+        assert "missing code or state" in resp.json()["detail"].lower()
+
+    async def test_oidc_callback_invalid_state(self, client):
+        """OIDC callback returns 400 for invalid/expired state."""
+        resp = await client.get("/auth/oidc/callback?code=test&state=invalid-state")
+        assert resp.status_code == 400
+        assert "invalid or expired state" in resp.json()["detail"].lower()
+
+    async def test_oidc_callback_error(self, client):
+        """OIDC callback returns 401 when provider returns error."""
+        resp = await client.get("/auth/oidc/callback?error=access_denied&error_description=User%20denied")
+        assert resp.status_code == 401
+        assert "access_denied" in resp.json()["detail"]

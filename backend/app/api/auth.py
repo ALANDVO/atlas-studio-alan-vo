@@ -8,11 +8,21 @@ Full OIDC authorization-code login via Keycloak is a planned milestone
 """
 from __future__ import annotations
 
+import secrets
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from ..core.config import settings
+from ..core.oidc import (
+    build_authorization_url_async,
+    consume_oidc_state,
+    create_user_from_claims,
+    exchange_code_for_tokens,
+    generate_pkce_pair,
+    store_oidc_state,
+    validate_id_token,
+)
 from ..core.security import (
     COOKIE_NAME,
     CurrentUser,
@@ -26,6 +36,121 @@ from ..core.security import (
 from ..models.schemas import LoginResponse, UserRead
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+
+@router.get("/oidc/login")
+async def oidc_login(
+    request: Request,
+    redirect_uri: str | None = None,
+) -> dict[str, str]:
+    """Initiate OIDC authorization-code flow with PKCE.
+
+    Returns the authorization URL to redirect the user to. The frontend should
+    redirect the browser to this URL.
+    """
+    if not settings.oidc_issuer_url or not settings.oidc_client_id:
+        raise HTTPException(
+            status_code=status.HTTP_501_NOT_IMPLEMENTED,
+            detail="OIDC not configured. Set OIDC_ISSUER_URL and OIDC_CLIENT_ID.",
+        )
+
+    # Generate PKCE pair and state/nonce
+    code_verifier, code_challenge = generate_pkce_pair()
+    state = secrets.token_urlsafe(32)
+    nonce = secrets.token_urlsafe(32)
+
+    # Use provided redirect_uri or default from config
+    oidc_redirect_uri = redirect_uri or settings.oidc_redirect_uri
+    if not oidc_redirect_uri:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="OIDC redirect_uri not configured. Set OIDC_REDIRECT_URI or pass redirect_uri query param.",
+        )
+
+    # Store state with PKCE verifier and nonce
+    store_oidc_state(state, nonce, code_verifier, oidc_redirect_uri)
+
+    # Build authorization URL
+    auth_url = await build_authorization_url_async(
+        redirect_uri=oidc_redirect_uri,
+        state=state,
+        nonce=nonce,
+        code_challenge=code_challenge,
+    )
+
+    return {"authorization_url": auth_url, "state": state}
+
+
+@router.get("/oidc/callback")
+async def oidc_callback(
+    request: Request,
+    response: Response,
+    code: str | None = None,
+    state: str | None = None,
+    error: str | None = None,
+    error_description: str | None = None,
+) -> LoginResponse:
+    """Handle OIDC authorization-code callback.
+
+    Validates state, nonce, PKCE, and ID token claims. Issues a session cookie
+    on success.
+    """
+    if error:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"OIDC error: {error} - {error_description or ''}",
+        )
+
+    if not code or not state:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing code or state parameter",
+        )
+
+    # Consume and validate state
+    oidc_state = consume_oidc_state(state)
+    if not oidc_state:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired state parameter",
+        )
+
+    nonce = oidc_state["nonce"]
+    code_verifier = oidc_state["code_verifier"]
+    redirect_uri = oidc_state["redirect_uri"]
+
+    # Exchange code for tokens
+    tokens = await exchange_code_for_tokens(code, code_verifier, redirect_uri)
+
+    id_token = tokens.get("id_token")
+    if not id_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token response missing ID token",
+        )
+
+    # Validate ID token (signature, issuer, audience, expiry, nonce)
+    claims = await validate_id_token(id_token, nonce)
+
+    # Create user from claims
+    sub, role, name = create_user_from_claims(claims)
+
+    # Create session
+    session_token = create_session(sub=sub, role=role, name=name)
+    response.set_cookie(
+        key=COOKIE_NAME,
+        value=session_token,
+        max_age=8 * 3600,
+        httponly=True,
+        samesite="lax",
+        secure=False,  # False for localhost dev; set True behind TLS in prod
+        path="/",
+    )
+    csrf = generate_csrf_token(session_token)
+    return LoginResponse(
+        user={"sub": sub, "role": role.value, "name": name},
+        csrf_token=csrf,
+    )
 
 
 @router.post("/demo", response_model=LoginResponse)

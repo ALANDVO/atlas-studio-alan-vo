@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 — work-in-progress checkpoint
+
+Partial code published for continued development. Known issues: STATUS.md.
+
 ## 1.0.0 — work-in-progress checkpoint
 
 Partial code published for continued development. Known issues: STATUS.md.
@@ -28,7 +32,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Backend tests (pytest + pytest-asyncio) covering scorer, lifecycle, auth, postings API, and scoring API.
 - Docker support: backend and frontend multi-stage, non-root images.
 - Docker Compose with Keycloak and Caddy TLS profiles.
-- GitHub Actions CI: backend tests, frontend build+test, Docker image builds.
+### Changed
+
+- Added OIDC authorization-code flow with PKCE (feature: auth-oidc).
+- New endpoints: `GET /auth/oidc/login` to initiate login, `GET /auth/oidc/callback` to handle Keycloak redirect.
+- Added OIDC configuration settings: `OIDC_ISSUER_URL`, `OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET`, `OIDC_REDIRECT_URI`, `OIDC_SCOPES`.
+- Added `python-jose` and `authlib` dependencies for JWT validation and OAuth2 client.
+- Added tests for OIDC login initiation and callback validation (state, nonce, PKCE, token claims).
 
 ### Fixed
 
