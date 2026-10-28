@@ -53,7 +53,7 @@ Tests: `backend/tests/test_scoring_api.py`
 
 ### auth-oidc — OIDC authorization-code login via Keycloak with SAML brokering
 
-Status: planned
+Status: in_progress
 
 Acceptance:
 - Demo mode login works on localhost only, refuses in production
@@ -61,7 +61,7 @@ Acceptance:
 - unauthenticated requests rejected, role denial enforced
 - OIDC callback validates state, nonce, PKCE and token claims
 
-Implementation: `backend/app/core/security.py`, `backend/app/api/auth.py`, `keycloak/realm-export.json`, `compose.yaml`
+Implementation: `backend/app/core/security.py`, `backend/app/core/oidc.py`, `backend/app/core/config.py`, `backend/app/api/auth.py`, `keycloak/realm-export.json`, `compose.yaml`
 
 Tests: `backend/tests/test_auth.py`
 

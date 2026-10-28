@@ -44,7 +44,13 @@ class Settings(BaseSettings):
     llm_provider: str = Field(default="openai-compatible", validation_alias="LLM_PROVIDER")
     llm_model: str = Field(default="gpt-4o-mini", validation_alias="LLM_MODEL")
     llm_base_url: str | None = Field(default=None, validation_alias="LLM_BASE_URL")
-    llm_timeout_seconds: float = Field(default=10.0, validation_alias="LLM_TIMEOUT_SECONDS")
+    # --- OIDC (Keycloak) ----------------------------------------------------
+    oidc_issuer_url: str | None = Field(default=None, validation_alias="OIDC_ISSUER_URL")
+    oidc_client_id: str | None = Field(default=None, validation_alias="OIDC_CLIENT_ID")
+    oidc_client_secret: str | None = Field(default=None, validation_alias="OIDC_CLIENT_SECRET")
+    oidc_redirect_uri: str | None = Field(default=None, validation_alias="OIDC_REDIRECT_URI")
+    oidc_scopes: str = Field(default="openid profile email roles", validation_alias="OIDC_SCOPES")
+
 
     # --- Server ------------------------------------------------------------
     host: str = Field(default="127.0.0.1")
