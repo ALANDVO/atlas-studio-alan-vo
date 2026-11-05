@@ -23,6 +23,15 @@ class TestDemoLogin:
         resp = await client.post("/auth/demo?role=superadmin")
         assert resp.status_code == 400
 
+    async def test_demo_login_refused_in_production(self, client, monkeypatch):
+        """Demo mode login is refused when ENVIRONMENT=production."""
+        from app.core.config import settings
+        monkeypatch.setattr(settings, "environment", "production")
+
+        resp = await client.post("/auth/demo?role=analyst")
+        assert resp.status_code == 403
+        assert "production" in resp.json()["detail"].lower()
+
     async def test_roles_list(self, client):
         resp = await client.get("/auth/roles")
         assert resp.status_code == 200

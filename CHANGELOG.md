@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.2.0 — work-in-progress checkpoint
+
+Partial code published for continued development. Known issues: STATUS.md.
+
+## 1.1.0 — 2026-11-05
+
+### Added
+
+- Test for demo mode production refusal (auth-oidc feature completion)
+
+### Changed
+
+- auth-oidc feature marked complete: OIDC authorization-code flow with PKCE for Keycloak, demo mode (localhost-only), and role-based authorization
+- All 91 backend tests pass
+
+
 ## 1.1.0 — work-in-progress checkpoint
 
 Partial code published for continued development. Known issues: STATUS.md.
