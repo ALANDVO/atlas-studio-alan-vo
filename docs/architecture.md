@@ -72,4 +72,4 @@ See `backend/app/services/lifecycle.py` for the engine and
 
 ---
 
-Alan Vo · [alanvo.net](https://alanvo.net)
+Alan Vo · [alanvo.net](https://alanvo.net) · [X: @alanvoasi](https://x.com/alanvoasi)
