@@ -90,3 +90,6 @@ Implementation: `backend/app/services/cv_tailor.py`, `backend/app/api/cv.py`
 
 Tests: `backend/tests/test_cv_tailor.py`
 
+---
+
+Alan Vo · [alanvo.net](https://alanvo.net)

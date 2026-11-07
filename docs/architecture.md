@@ -69,3 +69,7 @@ Candidates for a scoring round: new
 
 See `backend/app/services/lifecycle.py` for the engine and
 `backend/tests/test_lifecycle.py` for the issue-#534 semantics.
+
+---
+
+Alan Vo · [alanvo.net](https://alanvo.net)

@@ -224,3 +224,7 @@ scorer does not require any provider.
 ## License
 
 MIT — copyright Alan Vo <alanvo@gmail.com>
+
+---
+
+Alan Vo · [alanvo.net](https://alanvo.net)

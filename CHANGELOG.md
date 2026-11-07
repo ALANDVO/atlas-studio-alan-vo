@@ -60,3 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Posting lifecycle sweep is invoked at the start of a scoring round (issue #534), so past-deadline postings are retired to `expired` rather than scored. The `POST /api/scoring/run` response and the recorded `ScoringRun` now report the real expired count instead of a hardcoded 0.
 - Added explicit `POST /api/scoring/sweep` endpoint for retiring past-deadline postings; unauthenticated access is rejected.
+
+---
+
+Alan Vo · [alanvo.net](https://alanvo.net)

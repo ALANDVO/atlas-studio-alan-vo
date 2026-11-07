@@ -65,3 +65,7 @@ brokering slots. To enable:
 2. Configure SAML IdP enrollment in the Keycloak admin console under
    _Identity providers_.
 3. Start with `docker compose --profile auth up --build`.
+
+---
+
+Alan Vo · [alanvo.net](https://alanvo.net)
