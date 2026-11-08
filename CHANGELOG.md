@@ -1,8 +1,20 @@
 # Changelog
 
+## 1.3.0 — work-in-progress checkpoint
+
+Partial code published for continued development. Known issues: STATUS.md.
+
 ## 1.2.0 — work-in-progress checkpoint
 
 Partial code published for continued development. Known issues: STATUS.md.
+
+### Fixed
+
+- Fixed duplicate stopwords in TF-IDF scorer (`backend/app/services/scorer.py`): removed duplicate "may" and "than" entries
+- Added edge-case tests for tokenization and scoring (`backend/tests/test_scorer.py`):
+  - `test_short_text_becomes_empty`: handles very short texts that tokenize to empty
+  - `test_stopwords_only_text_scores_zero`: verifies stopwords-only text scores 0.0
+- All 93 backend tests pass
 
 ## 1.1.0 — 2026-11-05
 

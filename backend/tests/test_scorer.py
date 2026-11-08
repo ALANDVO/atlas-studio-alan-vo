@@ -45,6 +45,13 @@ class TestTokenization:
     def test_only_stopwords(self):
         assert tokenize("the and or but") == []
 
+    def test_short_text_becomes_empty(self):
+        # Single character tokens that are stopwords
+        assert tokenize("a") == []
+        # Very short text with only stopwords
+        assert tokenize("a an") == []
+        assert tokenize("the it") == []
+
 
 class TestScoring:
     @pytest.fixture
@@ -80,6 +87,17 @@ class TestScoring:
         score, matched = scorer.score_posting("")
         assert score == 0.0
         assert matched == []
+
+    def test_stopwords_only_text_scores_zero(self, scorer):
+        scorer.fit(["machine learning tensorflow"])
+        # Text that tokenizes to empty after stopword removal
+        score, matched = scorer.score_posting("the and or but")
+        assert score == 0.0
+        assert matched == []
+        # Also test single stopword tokens
+        score2, matched2 = scorer.score_posting("a")
+        assert score2 == 0.0
+        assert matched2 == []
 
     def test_determinism(self, scorer):
         scorer.fit(["ml tensorflow pytorch"])
