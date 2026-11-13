@@ -102,6 +102,37 @@ class ScoringResult(BaseModel):
     scored_postings: list[ScoredPosting]
 
 
+
+
+class ApplicationCreate(BaseModel):
+    posting_id: str
+    stage: str = 'applied'
+    notes: str = ''
+
+
+class ApplicationUpdate(BaseModel):
+    stage: str | None = None
+    notes: str | None = None
+
+
+class ApplicationRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: str
+    posting_id: str
+    stage: str
+    notes: str
+    applied_at: datetime
+    updated_at: datetime
+
+
+class ApplicationPage(BaseModel):
+    items: list[ApplicationRead]
+    total: int
+    page: int
+    page_size: int
+    pages: int
+
+
 class ExplainRequest(BaseModel):
     posting_id: str
     target: TargetProfile

@@ -23,9 +23,9 @@ from sqlalchemy import text
 
 from app.core.database import AsyncSessionFactory, engine, init_db
 from app.core.security import _SESSIONS
-from app.models.orm import AuditLog, LabelingExample, Posting, ScoringRun
+from app.models.orm import Application, AuditLog, LabelingExample, Posting, ScoringRun
 
-ALL_MODELS = [AuditLog, ScoringRun, LabelingExample, Posting]
+ALL_MODELS = [Application, AuditLog, ScoringRun, LabelingExample, Posting]
 
 
 @pytest.fixture(scope="session", autouse=True)

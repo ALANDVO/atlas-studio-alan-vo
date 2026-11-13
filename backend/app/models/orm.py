@@ -102,3 +102,22 @@ class LabelingExample(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=now_utc
     )
+
+class Application(Base):
+    """A job application tracked against a posting."""
+
+    __tablename__ = "applications"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=gen_uuid)
+    posting_id: Mapped[str] = mapped_column(String(36), index=True)
+    stage: Mapped[str] = mapped_column(
+        String(24), default="applied", index=True
+    )  # applied, screening, interview, offer, rejected, withdrawn
+    notes: Mapped[str] = mapped_column(Text, default="")
+    applied_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=now_utc, index=True
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=now_utc, onupdate=now_utc
+    )
+

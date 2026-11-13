@@ -19,6 +19,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .api.auth import router as auth_router
 from .api.postings import router as postings_router
 from .api.scoring import router as scoring_router
+from .api.applications import router as applications_router
 from .core.config import settings
 from .core.database import init_db
 
@@ -62,6 +63,7 @@ def create_app() -> FastAPI:
     app.include_router(auth_router)
     app.include_router(postings_router)
     app.include_router(scoring_router)
+    app.include_router(applications_router)
 
     @app.get("/health")
     async def health() -> dict[str, str]:

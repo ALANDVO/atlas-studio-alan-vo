@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_feature": "auth-oidc",
+  "current_feature": "application-tracking",
   "product": {
     "name": "atlas-studio-alan-vo",
     "domain": "AI/ML developer tools",
@@ -100,7 +100,7 @@
     {
       "id": "application-tracking",
       "title": "Application outcome tracking",
-      "status": "planned",
+      "status": "done",
       "description": "Track job application outcomes against postings.",
       "acceptance": [
         "POST /api/applications records an application against a posting",
@@ -109,6 +109,7 @@
       ],
       "implementation": [
         "backend/app/models/orm.py",
+        "backend/app/models/schemas.py",
         "backend/app/api/applications.py"
       ],
       "tests": [

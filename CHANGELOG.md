@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.4.0 — work-in-progress checkpoint
+
+Partial code published for continued development. Known issues: STATUS.md.
+
+## 1.4.0 — application-tracking feature
+
+### Added
+
+- Application tracking API (`backend/app/api/applications.py`): POST/GET/PATCH/DELETE `/api/applications` with stage management (applied, screening, interview, offer, rejected, withdrawn)
+- `Application` ORM model (`backend/app/models/orm.py`) with posting_id foreign key, stage, notes, applied_at, updated_at
+- Application schemas (`backend/app/models/schemas.py`): ApplicationCreate, ApplicationUpdate, ApplicationRead, ApplicationPage
+- 11 new integration tests (`backend/tests/test_applications.py`) covering create, get, list, filter by stage, update, delete, auth
+- All 104 backend tests pass
+
 ## 1.3.0 — work-in-progress checkpoint
 
 Partial code published for continued development. Known issues: STATUS.md.

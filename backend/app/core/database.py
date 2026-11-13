@@ -31,7 +31,7 @@ async def get_session() -> AsyncSession:
 
 async def init_db() -> None:
     """Create all tables (for development / tests)."""
-    from ..models.orm import Posting, ScoringRun, AuditLog, LabelingExample  # noqa: F401
+    from ..models.orm import Application, Posting, ScoringRun, AuditLog, LabelingExample  # noqa: F401
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
