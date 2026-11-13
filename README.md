@@ -220,6 +220,11 @@ scorer does not require any provider.
 | GET    | `/api/scoring/evaluate`   | analyst+ | IR metrics on labeled fixture        |
 | GET    | `/api/scoring/runs/{id}`  | viewer+  | A recorded scoring run               |
 | POST   | `/api/scoring/explain`    | analyst+ | Opt-in LLM explanation (needs key)   |
+| POST   | `/api/applications`      | analyst+ | Create application against a posting |
+| GET    | `/api/applications`      | viewer+  | List applications, filter by stage   |
+| GET    | `/api/applications/{id}` | viewer+  | Application detail                   |
+| PATCH  | `/api/applications/{id}` | analyst+ | Update stage/notes                   |
+| DELETE | `/api/applications/{id}` | analyst+ | Delete application                   |
 
 ## License
 

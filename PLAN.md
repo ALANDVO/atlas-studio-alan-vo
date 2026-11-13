@@ -4,7 +4,7 @@ Each round completes one feature or repair. Future items are planned, not implem
 
 ## Current round
 
-auth-oidc
+application-tracking
 
 ## Roadmap
 
@@ -67,14 +67,14 @@ Tests: `backend/tests/test_auth.py`
 
 ### application-tracking — Application outcome tracking
 
-Status: planned
+Status: done
 
 Acceptance:
 - POST /api/applications records an application against a posting
 - PATCH /api/applications/{id} updates the outcome
 - GET /api/applications lists applications with filtering
 
-Implementation: `backend/app/models/orm.py`, `backend/app/api/applications.py`
+Implementation: `backend/app/models/orm.py`, `backend/app/models/schemas.py`, `backend/app/api/applications.py`
 
 Tests: `backend/tests/test_applications.py`
 
