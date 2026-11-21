@@ -80,7 +80,7 @@ Tests: `backend/tests/test_applications.py`
 
 ### cv-tailor — CV/resume tailoring to a posting
 
-Status: planned
+Status: in_progress
 
 Acceptance:
 - POST /api/cv/tailor analyzes a posting against a base CV and returns keyword gaps

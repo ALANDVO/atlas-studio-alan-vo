@@ -1,6 +1,6 @@
 {
   "name": "atlas-studio",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "private": true,
   "description": "Frontend for Atlas Studio - local AI job application framework.",
   "type": "module",
