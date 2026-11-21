@@ -119,7 +119,7 @@
     {
       "id": "cv-tailor",
       "title": "CV/resume tailoring to a posting",
-      "status": "planned",
+      "status": "in_progress",
       "description": "Analyze a posting against a base CV and return keyword gaps, with optional LLM enhancement.",
       "acceptance": [
         "POST /api/cv/tailor analyzes a posting against a base CV and returns keyword gaps",

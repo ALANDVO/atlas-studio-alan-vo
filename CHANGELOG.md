@@ -1,8 +1,16 @@
 # Changelog
 
-## 1.4.0 — work-in-progress checkpoint
+## 1.5.0 — work-in-progress checkpoint
 
 Partial code published for continued development. Known issues: STATUS.md.
+
+## 1.4.0 — work-in-progress checkpoint
+
+### Added
+
+- CV/resume tailoring API (`backend/app/api/cv.py`): POST /api/cv/tailor analyzes a posting against a base CV and returns keyword gaps
+- CV tailoring service (`backend/app/services/cv_tailor.py`): deterministic token-based keyword gap analysis
+- 3 integration tests (`backend/tests/test_cv_tailor.py`) covering basic gaps, no-gaps edge case, and empty CV
 
 ## 1.4.0 — application-tracking feature
 
@@ -41,7 +49,6 @@ Partial code published for continued development. Known issues: STATUS.md.
 - auth-oidc feature marked complete: OIDC authorization-code flow with PKCE for Keycloak, demo mode (localhost-only), and role-based authorization
 - All 91 backend tests pass
 
-
 ## 1.1.0 — work-in-progress checkpoint
 
 Partial code published for continued development. Known issues: STATUS.md.
@@ -74,18 +81,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Backend tests (pytest + pytest-asyncio) covering scorer, lifecycle, auth, postings API, and scoring API.
 - Docker support: backend and frontend multi-stage, non-root images.
 - Docker Compose with Keycloak and Caddy TLS profiles.
-### Changed
-
-- Added OIDC authorization-code flow with PKCE (feature: auth-oidc).
-- New endpoints: `GET /auth/oidc/login` to initiate login, `GET /auth/oidc/callback` to handle Keycloak redirect.
-- Added OIDC configuration settings: `OIDC_ISSUER_URL`, `OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET`, `OIDC_REDIRECT_URI`, `OIDC_SCOPES`.
-- Added `python-jose` and `authlib` dependencies for JWT validation and OAuth2 client.
-- Added tests for OIDC login initiation and callback validation (state, nonce, PKCE, token claims).
-
-### Fixed
-
-- Posting lifecycle sweep is invoked at the start of a scoring round (issue #534), so past-deadline postings are retired to `expired` rather than scored. The `POST /api/scoring/run` response and the recorded `ScoringRun` now report the real expired count instead of a hardcoded 0.
-- Added explicit `POST /api/scoring/sweep` endpoint for retiring past-deadline postings; unauthenticated access is rejected.
 
 ---
 
